@@ -92,7 +92,7 @@ void ofApp::draw()
     ofDrawRectangle(0, 0, 200, video1.getHeight());
     
     //mask blend
-    drawBlendRectangle(170, 200, 0, 255);
+    drawBlendRectangle(180, 200, 0, 255);
     
     mMask1.endMask();
     mMask1.draw();
@@ -110,8 +110,8 @@ void ofApp::draw()
     ofDrawRectangle(400, 0, 200, video1.getHeight());
     
     //mask blend
-    drawBlendRectangle(400, 430, 255, 0);
-    drawBlendRectangle(570, 600, 0, 255);
+    drawBlendRectangle(400, 420, 255, 0);
+    drawBlendRectangle(580, 600, 0, 255);
     
     mMask2.endMask();
     mMask2.draw();
@@ -129,8 +129,8 @@ void ofApp::draw()
     ofDrawRectangle(800, 0, 200, video1.getHeight());
     
     //mask blend
-    drawBlendRectangle(800, 830, 255, 0);
-    drawBlendRectangle(970, 1000, 0, 255);
+    drawBlendRectangle(800, 820, 255, 0);
+    drawBlendRectangle(980, 1000, 0, 255);
     mMask3.endMask();
     mMask3.draw();
     
@@ -147,7 +147,7 @@ void ofApp::draw()
     ofDrawRectangle(1200, 0, video1.getWidth(), video1.getHeight());
     
     //mask blend
-    drawBlendRectangle(1200, video1.getWidth(), 255, 0);
+    drawBlendRectangle(1200, 1220, 255, 0);
     
     mMask4.endMask();
     mMask4.draw();
