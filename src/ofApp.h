@@ -2,12 +2,14 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "ofxFreeMapping.h"
 #include "ofxFreeMask.h"
+#include "ofDraggableMask.h"
 
 class ofApp : public ofBaseApp
 {
 public:
+    ofApp();
+    
     void setup();
     void update();
     void draw();
@@ -33,6 +35,8 @@ private:
     
     ofxFloatSlider ubictX, ubictY, velo;
     ofxColorSlider color;
+    
+    ofDraggableMask mDraggableMask;
     ofxPanel gui;
     
     int numMappers;

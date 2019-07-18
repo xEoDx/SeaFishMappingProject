@@ -1,5 +1,8 @@
 #include "ofApp.h"
 
+ofApp::ofApp() : mDraggableMask("First mask")
+{}
+
 void ofApp::setup()
 {
     ofBackground(0);
@@ -25,35 +28,42 @@ void ofApp::setup()
     }
 
 
-    mMask1.setup(video1.getWidth(), video1.getHeight());
+    mDraggableMask.setup(video1.getWidth(),
+                         video1.getHeight(),
+                         200,
+                         video1.getHeight(),
+                         0,0);
+    
     mMask2.setup(video1.getWidth(), video1.getHeight());
     mMask3.setup(video1.getWidth(), video1.getHeight());
     mMask4.setup(video1.getWidth(), video1.getHeight());
     
-    mMask1.newLayer();
+    
     mMask2.newLayer();
     mMask3.newLayer();
     mMask4.newLayer();
+    
+    
 
     /* GUI */
-    gui.setup();
-
-
-    gui.add(ubictX.setup("ubictX"
-                         ,140
-                         ,-ofGetWindowWidth()
-                         , ofGetWindowWidth()
-                         ));
-    gui.add(ubictY.setup("ubictY"
-                         ,140
-                         ,-ofGetWindowHeight()
-                         , ofGetWindowHeight()
-                         ));
-    gui.add (color.setup("Color",
-                         ofColor(255, 255,0,255),
-                         ofColor (0, 0, 0,0),
-                         ofColor(255,255,255,255)));
-    gui.add(velo.setup("velo", 1, -2, 2));
+//    gui.setup();
+//
+//
+//    gui.add(ubictX.setup("ubictX"
+//                         ,140
+//                         ,-ofGetWindowWidth()
+//                         , ofGetWindowWidth()
+//                         ));
+//    gui.add(ubictY.setup("ubictY"
+//                         ,140
+//                         ,-ofGetWindowHeight()
+//                         , ofGetWindowHeight()
+//                         ));
+//    gui.add (color.setup("Color",
+//                         ofColor(255, 255,0,255),
+//                         ofColor (0, 0, 0,0),
+//                         ofColor(255,255,255,255)));
+//    gui.add(velo.setup("velo", 1, -2, 2));
 }
 
 //--------------------------------------------------------------
@@ -79,78 +89,68 @@ void ofApp::draw()
     mScreens[0].stopMapping();
     
     // First front curtain
+    mDraggableMask.drawGui(); //needs to be outside screen mapping
     mScreens[1].startMapping();
-    mMask1.beginLayer();
-    ofSetColor(255,255);
+    mDraggableMask.beginLayer();
     video1.draw(0,0);
-    mMask1.endLayer();
+    mDraggableMask.endLayer();
     
-    mMask1.beginMask();
-    ofClear(0,0,0,255);
-    ofSetColor(ofColor::white);
-    ofFill();
-    ofDrawRectangle(0, 0, 200, video1.getHeight());
-    
-    //mask blend
-    drawBlendRectangle(180, 200, 0, 255);
-    
-    mMask1.endMask();
-    mMask1.draw();
+    mDraggableMask.drawMask();
     
     // Second front curtain
-    mMask2.beginLayer();
-    ofSetColor(255,255);
-    video1.draw(0,0);
-    mMask2.endLayer();
-    
-    mMask2.beginMask();
-    ofClear(0,0,0,255);
-    ofSetColor(ofColor::white);
-    ofFill();
-    ofDrawRectangle(400, 0, 200, video1.getHeight());
-    
-    //mask blend
-    drawBlendRectangle(400, 420, 255, 0);
-    drawBlendRectangle(580, 600, 0, 255);
-    
-    mMask2.endMask();
-    mMask2.draw();
-    
-    // Third front curtain
-    mMask3.beginLayer();
-    ofSetColor(255,255);
-    video1.draw(0,0);
-    mMask3.endLayer();
-    
-    mMask3.beginMask();
-    ofClear(0,0,0,255);
-    ofSetColor(ofColor::white);
-    ofFill();
-    ofDrawRectangle(800, 0, 200, video1.getHeight());
-    
-    //mask blend
-    drawBlendRectangle(800, 820, 255, 0);
-    drawBlendRectangle(980, 1000, 0, 255);
-    mMask3.endMask();
-    mMask3.draw();
-    
-    // Fourth front curtain
-    mMask4.beginLayer();
-    ofSetColor(255,255);
-    video1.draw(0,0);
-    mMask4.endLayer();
-    
-    mMask4.beginMask();
-    ofClear(0,0,0,255);
-    ofSetColor(ofColor::white);
-    ofFill();
-    ofDrawRectangle(1200, 0, video1.getWidth(), video1.getHeight());
-    
-    //mask blend
-    drawBlendRectangle(1200, 1220, 255, 0);
-    
-    mMask4.endMask();
-    mMask4.draw();
+//    mMask2.beginLayer();
+//    ofSetColor(255,255);
+//    video1.draw(0,0);
+//    mMask2.endLayer();
+//
+//    mMask2.beginMask();
+//    ofClear(0,0,0,255);
+//    ofSetColor(ofColor::white);
+//    ofFill();
+//    ofDrawRectangle(400, 0, 200, video1.getHeight());
+//
+//    //mask blend
+//    drawBlendRectangle(400, 420, 255, 0);
+//    drawBlendRectangle(580, 600, 0, 255);
+//
+//    mMask2.endMask();
+//    mMask2.draw();
+//
+//    // Third front curtain
+//    mMask3.beginLayer();
+//    ofSetColor(255,255);
+//    video1.draw(0,0);
+//    mMask3.endLayer();
+//
+//    mMask3.beginMask();
+//    ofClear(0,0,0,255);
+//    ofSetColor(ofColor::white);
+//    ofFill();
+//    ofDrawRectangle(800, 0, 200, video1.getHeight());
+//
+//    //mask blend
+//    drawBlendRectangle(800, 820, 255, 0);
+//    drawBlendRectangle(980, 1000, 0, 255);
+//    mMask3.endMask();
+//    mMask3.draw();
+//
+//    // Fourth front curtain
+//    mMask4.beginLayer();
+//    ofSetColor(255,255);
+//    video1.draw(0,0);
+//    mMask4.endLayer();
+//
+//    mMask4.beginMask();
+//    ofClear(0,0,0,255);
+//    ofSetColor(ofColor::white);
+//    ofFill();
+//    ofDrawRectangle(1200, 0, video1.getWidth(), video1.getHeight());
+//
+//    //mask blend
+//    drawBlendRectangle(1200, 1220, 255, 0);
+//
+//    mMask4.endMask();
+//    mMask4.draw();
     mScreens[2].stopMapping();
 
     if (bDibContornos)
@@ -159,7 +159,7 @@ void ofApp::draw()
         {
             mScreens[i].drawBoundingBox();
         }
-        gui.draw();
+        //gui.draw();
 
         ofSetColor(125,125);
         ofFill();
