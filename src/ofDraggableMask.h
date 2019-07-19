@@ -33,11 +33,13 @@ private:
         
     void OnXPositionChanged(float& value);
     void OnYPositionChanged(float& value);
+    void OnMaskWidthChanged(float& value);
+    void OnMaskHeightChanged(float& value);
     
 private:
     std::string mMaskName;
     ofxFreeMask mMask;
-    ofxFloatSlider mSliderXPosition, mSliderYPosition;
+    ofxFloatSlider mSliderXPosition, mSliderYPosition, mSliderWidth, mSliderHeight;
     ofxPanel mGui;
     bool mDoBlendEdges;
     float mLayerWidth;

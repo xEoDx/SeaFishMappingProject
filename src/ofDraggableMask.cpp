@@ -26,9 +26,14 @@ void ofDraggableMask::setup(float layerWidth, float layerHeight,
     mGui.setup(mMaskName);
     mGui.add(mSliderXPosition.setup("X", mMaskXPosition, 0, mLayerWidth));
     mGui.add(mSliderYPosition.setup("y", mMaskYPosition, 0, mLayerHeight));
+    mGui.add(mSliderWidth.setup("width", mMaskWidth, 0, mLayerWidth));
+    mGui.add(mSliderHeight.setup("height", mMaskHeight, 0, mLayerHeight));
     mGui.setPosition(mMaskXPosition, mMaskYPosition);
+    
     mSliderXPosition.addListener(this, &ofDraggableMask::OnXPositionChanged);
     mSliderYPosition.addListener(this, &ofDraggableMask::OnYPositionChanged);
+    mSliderWidth.addListener(this, &ofDraggableMask::OnMaskWidthChanged);
+    mSliderHeight.addListener(this, &ofDraggableMask::OnMaskHeightChanged);
 }
 
 void ofDraggableMask::OnXPositionChanged(float& value)
@@ -38,6 +43,14 @@ void ofDraggableMask::OnXPositionChanged(float& value)
 void ofDraggableMask::OnYPositionChanged(float& value)
 {
     mMaskYPosition = value;
+}
+void ofDraggableMask::OnMaskWidthChanged(float& value)
+{
+    mMaskWidth = value;
+}
+void ofDraggableMask::OnMaskHeightChanged(float& value)
+{
+    mMaskHeight = value;
 }
 
 void ofDraggableMask::beginLayer()
