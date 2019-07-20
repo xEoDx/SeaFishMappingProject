@@ -1,2 +1,6 @@
 # SeaFishMappingProject
-Video mapping
+* Required ofx addons:
+- ofxFreeMapping
+- ofxFreeMask
+- ofxGui
+- ofxJSON
