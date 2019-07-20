@@ -24,6 +24,8 @@ public:
     void drawMask();
     void drawGui();
     
+    void showConfig(bool showConfig);
+    
 private:
     void drawBlendRectangle(float initialPosition, float finalPosition,
                        float initialAlpha, float finalAlpha);
@@ -37,6 +39,7 @@ private:
     void OnMaskHeightChanged(float& value);
     
 private:
+    bool mShowConfig;
     std::string mMaskName;
     ofxFreeMask mMask;
     ofxFloatSlider mSliderXPosition, mSliderYPosition, mSliderWidth, mSliderHeight;

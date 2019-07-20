@@ -33,15 +33,12 @@ private:
 private:
     ofVideoPlayer video1, video2;
     
-    ofxFloatSlider ubictX, ubictY, velo;
-    ofxColorSlider color;
-    
     ofDraggableMask mDraggableMask;
     ofxPanel gui;
     
     int numMappers;
     ofxFreeMapping mScreens[2];
-    bool bDibContornos;
+    bool mShowConfiguration;
     bool bCommandPressed;
     
     ofxFreeMask mMask1, mMask2, mMask3, mMask4;

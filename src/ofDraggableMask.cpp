@@ -1,6 +1,8 @@
 #include "ofDraggableMask.h"
 
-ofDraggableMask::ofDraggableMask(std::string maskName) : mMaskName(maskName)
+ofDraggableMask::ofDraggableMask(std::string maskName) :
+    mMaskName(maskName),
+    mShowConfig(true)
 {}
 
 ofDraggableMask::~ofDraggableMask()
@@ -71,7 +73,10 @@ void ofDraggableMask::drawMask()
 
 void ofDraggableMask::drawGui()
 {
-    mGui.draw();
+    if(mShowConfig)
+    {
+        mGui.draw();
+    }
 }
 
 void ofDraggableMask::beginMasking()
@@ -92,6 +97,11 @@ void ofDraggableMask::endMasking()
 {
     mMask.endMask();
     mMask.draw();
+}
+
+void ofDraggableMask::showConfig(bool showConfig)
+{
+    mShowConfig = showConfig;
 }
 
 void ofDraggableMask::drawBlendRectangle(float initialPosition, float finalPosition,

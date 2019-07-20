@@ -12,7 +12,7 @@ void ofApp::setup()
     video2.play();
 
     ofSetFullscreen(true);
-    bDibContornos = true;
+    mShowConfiguration = true;
 
     numMappers = 2;
     for (int i = 0; i < numMappers; i++) {
@@ -42,41 +42,18 @@ void ofApp::setup()
     mMask2.newLayer();
     mMask3.newLayer();
     mMask4.newLayer();
-    
-    
-
-    /* GUI */
-//    gui.setup();
-//
-//
-//    gui.add(ubictX.setup("ubictX"
-//                         ,140
-//                         ,-ofGetWindowWidth()
-//                         , ofGetWindowWidth()
-//                         ));
-//    gui.add(ubictY.setup("ubictY"
-//                         ,140
-//                         ,-ofGetWindowHeight()
-//                         , ofGetWindowHeight()
-//                         ));
-//    gui.add (color.setup("Color",
-//                         ofColor(255, 255,0,255),
-//                         ofColor (0, 0, 0,0),
-//                         ofColor(255,255,255,255)));
-//    gui.add(velo.setup("velo", 1, -2, 2));
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::update()
+{
     video2.update();
     video1.update();
-    video2.setSpeed(velo);
 
     for (int i = 0; i < numMappers; i++)
     {
         mScreens[i].update();
     }
-
 }
 
 //--------------------------------------------------------------
@@ -153,7 +130,7 @@ void ofApp::draw()
 //    mMask4.draw();
     mScreens[2].stopMapping();
 
-    if (bDibContornos)
+    if (mShowConfiguration)
     {
         for (int i = 0; i < numMappers; i++)
         {
@@ -219,9 +196,10 @@ void ofApp::keyPressed(int key)
     }
 
 
-    if (key ==OF_KEY_CONTROL)
+    if (key == OF_KEY_CONTROL)
     {
-        bDibContornos = !bDibContornos;
+        mShowConfiguration = !mShowConfiguration;
+        mDraggableMask.showConfig(mShowConfiguration);
     }
 }
 
