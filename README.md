@@ -1,5 +1,5 @@
 # SeaFishMappingProject
-* Required ofx addons:
+Required ofx addons:
 - ofxFreeMapping
 - ofxFreeMask
 - ofxGui
