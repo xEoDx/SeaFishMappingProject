@@ -32,14 +32,11 @@ private:
     
 private:
     ofVideoPlayer video1, video2;
-    
-    ofDraggableMask mDraggableMask;
-    ofxPanel gui;
-    
-    int numMappers;
     ofxFreeMapping mScreens[2];
-    bool mShowConfiguration;
-    bool bCommandPressed;
+    ofDraggableMask mFirstCurtain, mSecondCurtain, mThirdCurtain, mFourthCurtain;
     
-    ofxFreeMask mMask1, mMask2, mMask3, mMask4;
+    int mScreenMappersCount;
+    
+    bool mShowConfiguration;
+    bool mIsCommandPressed;
 };

@@ -1,7 +1,11 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-ofApp::ofApp() : mDraggableMask("First mask")
+ofApp::ofApp() :
+    mFirstCurtain("First mask"),
+    mSecondCurtain("Second mask"),
+    mThirdCurtain("Third curtain"),
+    mFourthCurtain("Fourth curtain")
 {}
 
 //--------------------------------------------------------------
@@ -16,8 +20,8 @@ void ofApp::setup()
     ofSetFullscreen(true);
     mShowConfiguration = true;
 
-    numMappers = 2;
-    for (int i = 0; i < numMappers; i++) {
+    mScreenMappersCount = 2;
+    for (int i = 0; i < mScreenMappersCount; i++) {
         mScreens[i].initialize(
                                 video1.getWidth(),
                                 video1.getHeight(),
@@ -30,20 +34,29 @@ void ofApp::setup()
     }
 
 
-    mDraggableMask.setup(video1.getWidth(),
+    mFirstCurtain.setup(video1.getWidth(),
                          video1.getHeight(),
                          200,
                          video1.getHeight(),
                          0,0);
     
-    mMask2.setup(video1.getWidth(), video1.getHeight());
-    mMask3.setup(video1.getWidth(), video1.getHeight());
-    mMask4.setup(video1.getWidth(), video1.getHeight());
+    mSecondCurtain.setup(video1.getWidth(),
+                         video1.getHeight(),
+                         200,
+                         video1.getHeight(),
+                         400,0);
     
+    mThirdCurtain.setup(video1.getWidth(),
+                        video1.getHeight(),
+                        200,
+                        video1.getHeight(),
+                        800,0);
     
-    mMask2.newLayer();
-    mMask3.newLayer();
-    mMask4.newLayer();
+    mFourthCurtain.setup(video1.getWidth(),
+                         video1.getHeight(),
+                         200,
+                         video1.getHeight(),
+                         1200,0);
 }
 
 //--------------------------------------------------------------
@@ -52,7 +65,7 @@ void ofApp::update()
     video2.update();
     video1.update();
 
-    for (int i = 0; i < numMappers; i++)
+    for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].update();
     }
@@ -63,78 +76,48 @@ void ofApp::draw()
 {
     // Background mapping
     mScreens[0].startMapping();
-    ofSetColor(255,255);
-    video2.draw(0,0);
+    ofSetColor(255, 255);
+    video2.draw(0, 0);
     mScreens[0].stopMapping();
     
-    // First front curtain
-    mDraggableMask.drawGui(); //needs to be outside screen mapping
+    // Curtains Gui needs to be drawn
+    // before Mapping screens
+    mFirstCurtain.drawGui();
+    mSecondCurtain.drawGui();
+    mThirdCurtain.drawGui();
+    mFourthCurtain.drawGui();
+    
     mScreens[1].startMapping();
-    mDraggableMask.beginLayer();
-    video1.draw(0,0);
-    mDraggableMask.endLayer();
     
-    mDraggableMask.drawMask();
+    // First front curtain
+    mFirstCurtain.beginLayer();
+    video1.draw(0, 0);
+    mFirstCurtain.endLayer();
+    mFirstCurtain.drawMask();
     
-    // Second front curtain
-//    mMask2.beginLayer();
-//    ofSetColor(255,255);
-//    video1.draw(0,0);
-//    mMask2.endLayer();
-//
-//    mMask2.beginMask();
-//    ofClear(0,0,0,255);
-//    ofSetColor(ofColor::white);
-//    ofFill();
-//    ofDrawRectangle(400, 0, 200, video1.getHeight());
-//
-//    //mask blend
-//    drawBlendRectangle(400, 420, 255, 0);
-//    drawBlendRectangle(580, 600, 0, 255);
-//
-//    mMask2.endMask();
-//    mMask2.draw();
-//
-//    // Third front curtain
-//    mMask3.beginLayer();
-//    ofSetColor(255,255);
-//    video1.draw(0,0);
-//    mMask3.endLayer();
-//
-//    mMask3.beginMask();
-//    ofClear(0,0,0,255);
-//    ofSetColor(ofColor::white);
-//    ofFill();
-//    ofDrawRectangle(800, 0, 200, video1.getHeight());
-//
-//    //mask blend
-//    drawBlendRectangle(800, 820, 255, 0);
-//    drawBlendRectangle(980, 1000, 0, 255);
-//    mMask3.endMask();
-//    mMask3.draw();
-//
-//    // Fourth front curtain
-//    mMask4.beginLayer();
-//    ofSetColor(255,255);
-//    video1.draw(0,0);
-//    mMask4.endLayer();
-//
-//    mMask4.beginMask();
-//    ofClear(0,0,0,255);
-//    ofSetColor(ofColor::white);
-//    ofFill();
-//    ofDrawRectangle(1200, 0, video1.getWidth(), video1.getHeight());
-//
-//    //mask blend
-//    drawBlendRectangle(1200, 1220, 255, 0);
-//
-//    mMask4.endMask();
-//    mMask4.draw();
+    // Second curtain
+    mSecondCurtain.beginLayer();
+    video1.draw(0, 0);
+    mSecondCurtain.endLayer();    
+    mSecondCurtain.drawMask();
+  
+    // Third curtain
+    mThirdCurtain.beginLayer();
+    video1.draw(0, 0);
+    mThirdCurtain.endLayer();
+    mThirdCurtain.drawMask();
+    
+    // Fourth curtain
+    mFourthCurtain.beginLayer();
+    video1.draw(0, 0);
+    mFourthCurtain.endLayer();
+    mFourthCurtain.drawMask();
+    
     mScreens[2].stopMapping();
 
     if (mShowConfiguration)
     {
-        for (int i = 0; i < numMappers; i++)
+        for (int i = 0; i < mScreenMappersCount; i++)
         {
             mScreens[i].drawBoundingBox();
         }
@@ -170,16 +153,16 @@ void ofApp::keyPressed(int key)
     switch(key)
     {
         case OF_KEY_COMMAND:
-            bCommandPressed = true;
+            mIsCommandPressed = true;
             break;
         case 'f':
-            if (bCommandPressed)
+            if (mIsCommandPressed)
                 ofToggleFullscreen();
             break;
 
         case 'l':
-            if (bCommandPressed)
-                for (int i = 0; i < numMappers; i++)
+            if (mIsCommandPressed)
+                for (int i = 0; i < mScreenMappersCount; i++)
                 {
                     char buf[256];
                     sprintf(buf, "mapper%d.txt", i);
@@ -187,24 +170,23 @@ void ofApp::keyPressed(int key)
                 }
             break;
 
-
-
         case's':
-            for (int i = 0; i < numMappers; i++)
+            for (int i = 0; i < mScreenMappersCount; i++)
             {
                 char buf[256];
                 sprintf(buf, "mapper%d.txt", i);
                 mScreens[i].save(ofToDataPath(buf));
             }
             break;
-
     }
-
 
     if (key == OF_KEY_CONTROL)
     {
         mShowConfiguration = !mShowConfiguration;
-        mDraggableMask.showConfig(mShowConfiguration);
+        mFirstCurtain.showConfig(mShowConfiguration);
+        mSecondCurtain.showConfig(mShowConfiguration);
+        mThirdCurtain.showConfig(mShowConfiguration);
+        mFourthCurtain.showConfig(mShowConfiguration);
     }
 }
 
@@ -220,7 +202,7 @@ void ofApp::mouseMoved(int x, int y )
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    for (int i = 0; i < numMappers; i++)
+    for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mouseDragged(x, y);
     }
@@ -228,7 +210,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    for (int i = 0; i < numMappers; i++)
+    for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mousePressed(x, y);
     }
@@ -237,7 +219,7 @@ void ofApp::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button)
 {
-    for (int i = 0; i < numMappers; i++)
+    for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mouseReleased(x, y);
     }
