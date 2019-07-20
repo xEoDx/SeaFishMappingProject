@@ -56,13 +56,6 @@ void ofApp::draw()
     video2.draw(0, 0);
     mScreens[0].stopMapping();
     
-    // Curtains Gui needs to be drawn
-    // before Mapping screens
-    mFirstCurtain.drawGui();
-    mSecondCurtain.drawGui();
-    mThirdCurtain.drawGui();
-    mFourthCurtain.drawGui();
-    
     mScreens[1].startMapping();
     
     // First front curtain
@@ -93,6 +86,13 @@ void ofApp::draw()
 
     if (mShowConfiguration)
     {
+        // Curtains Gui needs to be drawn
+        // before Mapping screens
+        mFirstCurtain.drawGui();
+        mSecondCurtain.drawGui();
+        mThirdCurtain.drawGui();
+        mFourthCurtain.drawGui();
+        
         for (int i = 0; i < mScreenMappersCount; i++)
         {
             mScreens[i].drawBoundingBox();
@@ -100,10 +100,10 @@ void ofApp::draw()
 
         ofSetColor(125,125);
         ofFill();
-        ofDrawRectangle(20,ofGetHeight()-70, 350,100);
+        ofDrawRectangle(20,ofGetHeight()-70, 450,100);
         ofSetColor(255, 255);
-        ofDrawBitmapString("COMMAND + F Fullscreen, L Load, S Save", 40, ofGetHeight()-40);
-        ofDrawBitmapString("CONTROL Debug Mode", 40, ofGetHeight()-20);
+        ofDrawBitmapString("F: Fullscreen, L: Load, S: Save", 40, ofGetHeight()-40);
+        ofDrawBitmapString("CONTROL: Enable/disable configuration mode", 40, ofGetHeight()-20);
     }
 }
 
