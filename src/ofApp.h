@@ -27,16 +27,10 @@ public:
     void gotMessage(ofMessage msg);
     
 private:
-    void drawBlendRectangle(float initialPosition, float finalPosition,
-                            float initialAlpha, float finalAlpha);
-    
-private:
     ofVideoPlayer video1, video2;
     ofxFreeMapping mScreens[2];
     ofDraggableMask mFirstCurtain, mSecondCurtain, mThirdCurtain, mFourthCurtain;
     
-    int mScreenMappersCount;
-    
+    int mScreenMappersCount;    
     bool mShowConfiguration;
-    bool mIsCommandPressed;
 };

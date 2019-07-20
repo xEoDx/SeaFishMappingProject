@@ -2,6 +2,7 @@
 #include "ofxGui.h"
 #include "ofxFreeMapping.h"
 #include "ofxFreeMask.h"
+#include "ofxJSON.h"
 
 /**
  * Description: creates a rectangular mask with a width,height which
@@ -15,10 +16,49 @@
  */
 class ofDraggableMask
 {
+struct MaskConfig
+{
+    float layerWidth;
+    float layerHeight;
+    float maskWidth;
+    float maskHeight;
+    float x;
+    float y;
+    float maskBlendSize;
+    bool isMaskBlending;
+    
+    // Default init layer 1x1 otherwise we have issues
+    MaskConfig() :
+        layerWidth(1),
+        layerHeight(1),
+        maskWidth(0),
+        maskHeight(0),
+        x(0),
+        y(0),
+        maskBlendSize(0),
+        isMaskBlending(false)
+    {}
+    
+    std::string toString()
+    {
+        return "{"
+        "\"layerWidth\": " + std::to_string(layerWidth) +
+        ",\"layerHeight\":" + std::to_string(layerHeight) +
+        ",\"maskWidth\":" + std::to_string(maskWidth) +
+        ",\"maskHeight\":" + std::to_string(maskHeight) +
+        ",\"x\":" + std::to_string(x) +
+        ",\"y\":" + std::to_string(y) +
+        ",\"maskBlendSize\":" + std::to_string(maskBlendSize) +
+        ",\"isMaskBlending\":" + std::to_string(isMaskBlending) +
+        "}";
+    }
+};
+    
 public:
-    ofDraggableMask(std::string maskName);
+    ofDraggableMask();
     ~ofDraggableMask();
     
+    void setup(std::string maskName, float layerWidth, float layerHeight);
     void setup(float layerWidth, float layerHeight,
                float maskWidth, float maskHeight,
                float initialXPosition, float initialYPosition,
@@ -31,6 +71,8 @@ public:
     void drawGui();
     
     void showConfig(bool showConfig);
+    void saveConfig();
+    void loadConfig();
     
 private:
     void drawBlendRectangle(float initialPosition, float finalPosition,
@@ -45,17 +87,11 @@ private:
     void OnMaskHeightChanged(float& value);
     
 private:
+    MaskConfig mConfig;
     bool mShowConfig;
     std::string mMaskName;
+    ofxJSONElement mJsonElement;
     ofxFreeMask mMask;
     ofxFloatSlider mSliderXPosition, mSliderYPosition, mSliderWidth, mSliderHeight;
     ofxPanel mGui;
-    bool mDoBlendEdges;
-    float mLayerWidth;
-    float mLayerHeight;
-    float mMaskWidth;
-    float mMaskHeight;
-    float mMaskBlendWidth;
-    float mMaskXPosition;
-    float mMaskYPosition;
 };

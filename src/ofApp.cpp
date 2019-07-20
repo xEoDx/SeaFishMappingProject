@@ -1,11 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-ofApp::ofApp() :
-    mFirstCurtain("First mask"),
-    mSecondCurtain("Second mask"),
-    mThirdCurtain("Third curtain"),
-    mFourthCurtain("Fourth curtain")
+ofApp::ofApp()
 {}
 
 //--------------------------------------------------------------
@@ -17,7 +13,7 @@ void ofApp::setup()
     video2.load("2.mp4");
     video2.play();
 
-    ofSetFullscreen(true);
+    ofSetFullscreen(false);
     mShowConfiguration = true;
 
     mScreenMappersCount = 2;
@@ -33,30 +29,10 @@ void ofApp::setup()
         mScreens[i].load(ofToDataPath(buf));
     }
 
-
-    mFirstCurtain.setup(video1.getWidth(),
-                         video1.getHeight(),
-                         200,
-                         video1.getHeight(),
-                         0,0);
-    
-    mSecondCurtain.setup(video1.getWidth(),
-                         video1.getHeight(),
-                         200,
-                         video1.getHeight(),
-                         400,0);
-    
-    mThirdCurtain.setup(video1.getWidth(),
-                        video1.getHeight(),
-                        200,
-                        video1.getHeight(),
-                        800,0);
-    
-    mFourthCurtain.setup(video1.getWidth(),
-                         video1.getHeight(),
-                         200,
-                         video1.getHeight(),
-                         1200,0);
+    mFirstCurtain.setup("FirstCurtain", video1.getWidth(), video1.getHeight());
+    mSecondCurtain.setup("SecondCurtain", video1.getWidth(), video1.getHeight());
+    mThirdCurtain.setup("ThirdCurtain", video1.getWidth(), video1.getHeight());
+    mFourthCurtain.setup("FourthCurtain", video1.getWidth(), video1.getHeight());
 }
 
 //--------------------------------------------------------------
@@ -132,42 +108,30 @@ void ofApp::draw()
 }
 
 //--------------------------------------------------------------
-void ofApp::drawBlendRectangle(float initialPosition, float finalPosition,
-                                float initialAlpha, float finalAlpha)
-{
-    for(float p = initialPosition; p <= finalPosition; p++)
-    {
-        float lerpedAlpha = ofLerp(initialAlpha, finalAlpha, (p-initialPosition)/(finalPosition-initialPosition));
-        ofEnableAlphaBlending();
-        ofSetColor(0, 0, 0, lerpedAlpha);
-        ofDrawRectangle(p, 0, 1, video1.getHeight());
-        ofDisableAlphaBlending();
-    }
-}
-
-//--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
     cout << "keyPressed " << key << endl;
     
     switch(key)
     {
-        case OF_KEY_COMMAND:
-            mIsCommandPressed = true;
-            break;
         case 'f':
-            if (mIsCommandPressed)
-                ofToggleFullscreen();
+            ofToggleFullscreen();
+
             break;
 
         case 'l':
-            if (mIsCommandPressed)
-                for (int i = 0; i < mScreenMappersCount; i++)
-                {
-                    char buf[256];
-                    sprintf(buf, "mapper%d.txt", i);
-                    mScreens[i].load(ofToDataPath(buf));
-                }
+            for (int i = 0; i < mScreenMappersCount; i++)
+            {
+                char buf[256];
+                sprintf(buf, "mapper%d.txt", i);
+                mScreens[i].load(ofToDataPath(buf));
+            }
+            
+            mFirstCurtain.loadConfig();
+            mSecondCurtain.loadConfig();
+            mThirdCurtain.loadConfig();
+            mFourthCurtain.loadConfig();
+            
             break;
 
         case's':
@@ -177,6 +141,11 @@ void ofApp::keyPressed(int key)
                 sprintf(buf, "mapper%d.txt", i);
                 mScreens[i].save(ofToDataPath(buf));
             }
+            
+            mFirstCurtain.saveConfig();
+            mSecondCurtain.saveConfig();
+            mThirdCurtain.saveConfig();
+            mFourthCurtain.saveConfig();
             break;
     }
 

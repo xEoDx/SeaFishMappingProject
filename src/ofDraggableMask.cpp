@@ -1,8 +1,7 @@
 #include "ofDraggableMask.h"
 
 //--------------------------------------------------------------
-ofDraggableMask::ofDraggableMask(std::string maskName) :
-    mMaskName(maskName),
+ofDraggableMask::ofDraggableMask() :
     mShowConfig(true)
 {}
 
@@ -11,29 +10,32 @@ ofDraggableMask::~ofDraggableMask()
 {}
 
 //--------------------------------------------------------------
-void ofDraggableMask::setup(float layerWidth, float layerHeight,
-                            float maskWidth, float maskHeight,
-                            float initialXPosition, float initialYPosition,
-                            float blendWidth, bool blendEdges)
+void ofDraggableMask::setup(std::string maskName, float layerWidth, float layerHeight)
 {
-    mLayerWidth = layerWidth;
-    mLayerHeight = layerHeight;
-    mMaskWidth = maskWidth;
-    mMaskHeight = maskHeight;
-    mMaskXPosition = initialXPosition;
-    mMaskYPosition = initialYPosition;
-    mDoBlendEdges = blendEdges;
-    mMaskBlendWidth = blendWidth;
+    mMaskName = maskName + ".json";
+    bool doesFileExist = mJsonElement.open(mMaskName);
     
-    mMask.setup(layerWidth, layerHeight);
+    mConfig.layerWidth = layerWidth;
+    mConfig.layerHeight = layerHeight;
+    
+    if(!doesFileExist)
+    {
+        mJsonElement.parse(mConfig.toString());
+        mJsonElement.save(mMaskName);
+    }
+    
+    loadConfig();
+    
+    mMask.setup(mConfig.layerWidth, mConfig.layerHeight);
     mMask.newLayer();
     
     mGui.setup(mMaskName);
-    mGui.add(mSliderXPosition.setup("X", mMaskXPosition, 0, mLayerWidth));
-    mGui.add(mSliderYPosition.setup("y", mMaskYPosition, 0, mLayerHeight));
-    mGui.add(mSliderWidth.setup("width", mMaskWidth, 0, mLayerWidth));
-    mGui.add(mSliderHeight.setup("height", mMaskHeight, 0, mLayerHeight));
-    mGui.setPosition(mMaskXPosition, mMaskYPosition);
+    mGui.add(mSliderXPosition.setup("X", mConfig.x, 0, mConfig.layerWidth));
+    mGui.add(mSliderYPosition.setup("y", mConfig.y, 0, mConfig.layerHeight));
+    mGui.add(mSliderWidth.setup("width", mConfig.maskWidth, 0, mConfig.layerWidth));
+    mGui.add(mSliderHeight.setup("height", mConfig.maskHeight, 0, mConfig.layerHeight));
+    //TODO ADD TOGGLE FOR BLEND OR NOT ALPHA
+    mGui.setPosition(mConfig.x, mConfig.y);
     
     mSliderXPosition.addListener(this, &ofDraggableMask::OnXPositionChanged);
     mSliderYPosition.addListener(this, &ofDraggableMask::OnYPositionChanged);
@@ -42,27 +44,59 @@ void ofDraggableMask::setup(float layerWidth, float layerHeight,
 }
 
 //--------------------------------------------------------------
+void ofDraggableMask::saveConfig()
+{
+    mJsonElement.parse(mConfig.toString());
+    mJsonElement.save(mMaskName);
+}
+
+//--------------------------------------------------------------
+void ofDraggableMask::loadConfig()
+{
+    const float& layerWidth = mJsonElement["layerWidth"].asFloat();
+    const float& layerHeight = mJsonElement["layerHeight"].asFloat();
+    
+    const float& maskWidth = mJsonElement["maskWidth"].asFloat();
+    const float& maskHeight = mJsonElement["maskHeight"].asFloat();
+    
+    const float& x = mJsonElement["x"].asFloat();
+    const float& y = mJsonElement["y"].asFloat();
+    
+    const float& maskBlendSize = mJsonElement["maskBlendSize"].asFloat();
+    const float& isMaskBlending = mJsonElement["isMaskBlending"].asBool();
+    
+    mConfig.layerWidth = layerWidth;
+    mConfig.layerHeight = layerHeight;
+    mConfig.maskWidth = maskWidth;
+    mConfig.maskHeight = maskHeight;
+    mConfig.x = x;
+    mConfig.y = y;
+    mConfig.maskBlendSize = maskBlendSize;
+    mConfig.isMaskBlending = isMaskBlending;
+}
+
+//--------------------------------------------------------------
 void ofDraggableMask::OnXPositionChanged(float& value)
 {
-    mMaskXPosition = value;
+    mConfig.x = value;
 }
 
 //--------------------------------------------------------------
 void ofDraggableMask::OnYPositionChanged(float& value)
 {
-    mMaskYPosition = value;
+    mConfig.y = value;
 }
 
 //--------------------------------------------------------------
 void ofDraggableMask::OnMaskWidthChanged(float& value)
 {
-    mMaskWidth = value;
+    mConfig.maskWidth = value;
 }
 
 //--------------------------------------------------------------
 void ofDraggableMask::OnMaskHeightChanged(float& value)
 {
-    mMaskHeight = value;
+    mConfig.maskHeight = value;
 }
 
 //--------------------------------------------------------------
@@ -102,11 +136,11 @@ void ofDraggableMask::beginMasking()
     ofSetColor(ofColor::white);
     ofFill();
     
-    ofDrawRectangle(mMaskXPosition, mMaskYPosition, mMaskWidth, mMaskHeight);
+    ofDrawRectangle(mConfig.x, mConfig.y, mConfig.maskWidth, mConfig.maskHeight);
     
     //mask blend
-    drawBlendRectangle(mMaskXPosition, mMaskXPosition + mMaskBlendWidth, 255, 0);
-    drawBlendRectangle(mMaskXPosition + (mMaskWidth - mMaskBlendWidth), mMaskXPosition + mMaskWidth, 0, 255);
+    drawBlendRectangle(mConfig.x, mConfig.x + mConfig.maskBlendSize, 255, 0);
+    drawBlendRectangle(mConfig.x + (mConfig.maskWidth - mConfig.maskBlendSize), mConfig.x + mConfig.maskBlendSize, 0, 255);
 }
 
 //--------------------------------------------------------------
@@ -131,7 +165,7 @@ void ofDraggableMask::drawBlendRectangle(float initialPosition, float finalPosit
         float lerpedAlpha = ofLerp(initialAlpha, finalAlpha, (p-initialPosition)/(finalPosition-initialPosition));
         ofEnableAlphaBlending();
         ofSetColor(0, 0, 0, lerpedAlpha);
-        ofDrawRectangle(p, 0, 1, mMaskHeight);
+        ofDrawRectangle(p, 0, 1, mConfig.maskHeight);
         ofDisableAlphaBlending();
     }
 }
