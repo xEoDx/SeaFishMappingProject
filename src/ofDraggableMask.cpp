@@ -1,13 +1,16 @@
 #include "ofDraggableMask.h"
 
+//--------------------------------------------------------------
 ofDraggableMask::ofDraggableMask(std::string maskName) :
     mMaskName(maskName),
     mShowConfig(true)
 {}
 
+//--------------------------------------------------------------
 ofDraggableMask::~ofDraggableMask()
 {}
 
+//--------------------------------------------------------------
 void ofDraggableMask::setup(float layerWidth, float layerHeight,
                             float maskWidth, float maskHeight,
                             float initialXPosition, float initialYPosition,
@@ -38,39 +41,51 @@ void ofDraggableMask::setup(float layerWidth, float layerHeight,
     mSliderHeight.addListener(this, &ofDraggableMask::OnMaskHeightChanged);
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::OnXPositionChanged(float& value)
 {
     mMaskXPosition = value;
 }
+
+//--------------------------------------------------------------
 void ofDraggableMask::OnYPositionChanged(float& value)
 {
     mMaskYPosition = value;
 }
+
+//--------------------------------------------------------------
 void ofDraggableMask::OnMaskWidthChanged(float& value)
 {
     mMaskWidth = value;
 }
+
+//--------------------------------------------------------------
 void ofDraggableMask::OnMaskHeightChanged(float& value)
 {
     mMaskHeight = value;
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::beginLayer()
 {
     mMask.beginLayer();
     ofSetColor(255,255);
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::endLayer()
 {
     mMask.endLayer();
 }
+
+//--------------------------------------------------------------
 void ofDraggableMask::drawMask()
 {
     beginMasking();
     endMasking();
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::drawGui()
 {
     if(mShowConfig)
@@ -79,6 +94,7 @@ void ofDraggableMask::drawGui()
     }
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::beginMasking()
 {
     mMask.beginMask();
@@ -93,17 +109,20 @@ void ofDraggableMask::beginMasking()
     drawBlendRectangle(mMaskXPosition + (mMaskWidth - mMaskBlendWidth), mMaskXPosition + mMaskWidth, 0, 255);
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::endMasking()
 {
     mMask.endMask();
     mMask.draw();
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::showConfig(bool showConfig)
 {
     mShowConfig = showConfig;
 }
 
+//--------------------------------------------------------------
 void ofDraggableMask::drawBlendRectangle(float initialPosition, float finalPosition,
                                float initialAlpha, float finalAlpha)
 {
@@ -116,4 +135,3 @@ void ofDraggableMask::drawBlendRectangle(float initialPosition, float finalPosit
         ofDisableAlphaBlending();
     }
 }
-

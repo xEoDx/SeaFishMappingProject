@@ -5,7 +5,13 @@
 
 /**
  * Description: creates a rectangular mask with a width,height which
- * can have alpha blended corners and it's position and width is adjustable
+ * can have alpha blended corners. The mask can be adjusted in position
+ * and dimensions.
+ *
+ * Gui has to be drawn outside an ofxFreeScreen, as the TransformMatrix would
+ * make the render to have a different position than the input logic.
+ *
+ * Blend can be adjusted to have it on any of the sides of the rectangle TODO
  */
 class ofDraggableMask
 {

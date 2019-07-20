@@ -1,8 +1,10 @@
 #include "ofApp.h"
 
+//--------------------------------------------------------------
 ofApp::ofApp() : mDraggableMask("First mask")
 {}
 
+//--------------------------------------------------------------
 void ofApp::setup()
 {
     ofBackground(0);
@@ -136,7 +138,6 @@ void ofApp::draw()
         {
             mScreens[i].drawBoundingBox();
         }
-        //gui.draw();
 
         ofSetColor(125,125);
         ofFill();
@@ -147,6 +148,7 @@ void ofApp::draw()
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::drawBlendRectangle(float initialPosition, float finalPosition,
                                 float initialAlpha, float finalAlpha)
 {
@@ -160,22 +162,25 @@ void ofApp::drawBlendRectangle(float initialPosition, float finalPosition,
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
     cout << "keyPressed " << key << endl;
     
-    switch(key){
+    switch(key)
+    {
         case OF_KEY_COMMAND:
             bCommandPressed = true;
             break;
         case 'f':
-            if(bCommandPressed)
+            if (bCommandPressed)
                 ofToggleFullscreen();
             break;
 
         case 'l':
-            if(bCommandPressed)
-                for (int i = 0; i < numMappers; i++) {
+            if (bCommandPressed)
+                for (int i = 0; i < numMappers; i++)
+                {
                     char buf[256];
                     sprintf(buf, "mapper%d.txt", i);
                     mScreens[i].load(ofToDataPath(buf));
@@ -203,15 +208,17 @@ void ofApp::keyPressed(int key)
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
 }
 
-
+//--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
 }
 
+//--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
     for (int i = 0; i < numMappers; i++)
     {
@@ -219,7 +226,7 @@ void ofApp::mouseDragged(int x, int y, int button){
     }
 }
 
-
+//--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
     for (int i = 0; i < numMappers; i++)
     {
@@ -227,7 +234,7 @@ void ofApp::mousePressed(int x, int y, int button){
     }
 }
 
-
+//--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button)
 {
     for (int i = 0; i < numMappers; i++)
@@ -236,6 +243,7 @@ void ofApp::mouseReleased(int x, int y, int button)
     }
 }
 
+//--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y)
 {
 }
