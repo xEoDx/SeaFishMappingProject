@@ -34,13 +34,17 @@ void ofDraggableMask::setup(std::string maskName, float layerWidth, float layerH
     mGui.add(mSliderYPosition.setup("y", mConfig.y, 0, mConfig.layerHeight));
     mGui.add(mSliderWidth.setup("width", mConfig.maskWidth, 0, mConfig.layerWidth));
     mGui.add(mSliderHeight.setup("height", mConfig.maskHeight, 0, mConfig.layerHeight));
-    //TODO ADD TOGGLE FOR BLEND OR NOT ALPHA
+    mGui.add(mSliderBlendSize.setup("blend size", mConfig.maskBlendSize, 0, (mConfig.maskWidth/2)));
+    mGui.add(mAlphaBlendToggle.setup("alpha blend", mConfig.isMaskBlending));
+    
     mGui.setPosition(mConfig.x, mConfig.y);
     
     mSliderXPosition.addListener(this, &ofDraggableMask::OnXPositionChanged);
     mSliderYPosition.addListener(this, &ofDraggableMask::OnYPositionChanged);
     mSliderWidth.addListener(this, &ofDraggableMask::OnMaskWidthChanged);
     mSliderHeight.addListener(this, &ofDraggableMask::OnMaskHeightChanged);
+    mSliderBlendSize.addListener(this, &ofDraggableMask::OnBlendSizeChanged);
+    mAlphaBlendToggle.addListener(this, &ofDraggableMask::OnAlphaBlendToggleChanged);
 }
 
 //--------------------------------------------------------------
@@ -100,6 +104,18 @@ void ofDraggableMask::OnMaskHeightChanged(float& value)
 }
 
 //--------------------------------------------------------------
+void ofDraggableMask::OnBlendSizeChanged(float& value)
+{
+    mConfig.maskBlendSize = value;
+}
+
+//--------------------------------------------------------------
+void ofDraggableMask::OnAlphaBlendToggleChanged(bool& value)
+{
+    mConfig.isMaskBlending = value;
+}
+
+//--------------------------------------------------------------
 void ofDraggableMask::beginLayer()
 {
     mMask.beginLayer();
@@ -139,8 +155,11 @@ void ofDraggableMask::beginMasking()
     ofDrawRectangle(mConfig.x, mConfig.y, mConfig.maskWidth, mConfig.maskHeight);
     
     //mask blend
-    drawBlendRectangle(mConfig.x, mConfig.x + mConfig.maskBlendSize, 255, 0);
-    drawBlendRectangle(mConfig.x + (mConfig.maskWidth - mConfig.maskBlendSize), mConfig.x + mConfig.maskBlendSize, 0, 255);
+    if (mConfig.isMaskBlending)
+    {
+        drawBlendRectangle(mConfig.x, mConfig.x + mConfig.maskBlendSize, 255, 0);
+        drawBlendRectangle(mConfig.x + (mConfig.maskWidth - mConfig.maskBlendSize), mConfig.x + mConfig.maskWidth, 0, 255);
+    }
 }
 
 //--------------------------------------------------------------

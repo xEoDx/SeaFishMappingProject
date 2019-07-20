@@ -85,6 +85,8 @@ private:
     void OnYPositionChanged(float& value);
     void OnMaskWidthChanged(float& value);
     void OnMaskHeightChanged(float& value);
+    void OnBlendSizeChanged(float& value);
+    void OnAlphaBlendToggleChanged(bool& value);
     
 private:
     MaskConfig mConfig;
@@ -92,6 +94,7 @@ private:
     std::string mMaskName;
     ofxJSONElement mJsonElement;
     ofxFreeMask mMask;
-    ofxFloatSlider mSliderXPosition, mSliderYPosition, mSliderWidth, mSliderHeight;
+    ofxFloatSlider mSliderXPosition, mSliderYPosition, mSliderWidth, mSliderHeight, mSliderBlendSize;
+    ofxToggle mAlphaBlendToggle;
     ofxPanel mGui;
 };
