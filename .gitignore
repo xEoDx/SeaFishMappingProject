@@ -2,3 +2,17 @@
 *.plist
 *.xcconfig
 *.xcodeproj
+obj/
+*.dll
+.idea/
+.vs/
+*.exe
+*.vcxproj.*
+*.vcxproj
+*.sln
+*.rc
+*.user
+*.exp
+*.ilk
+*.pdb
+*.lib
