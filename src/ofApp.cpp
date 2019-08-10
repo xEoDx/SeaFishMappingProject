@@ -109,11 +109,18 @@ void ofApp::draw()
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
-{
-    cout << "keyPressed " << key << endl;
-    
+{    
     switch(key)
     {
+		case OF_KEY_CONTROL:
+			mShowConfiguration = !mShowConfiguration;
+			mFirstCurtain.showConfig(mShowConfiguration);
+			mSecondCurtain.showConfig(mShowConfiguration);
+			mThirdCurtain.showConfig(mShowConfiguration);
+			mFourthCurtain.showConfig(mShowConfiguration);
+
+			break;
+		
         case 'f':
             ofToggleFullscreen();
 
@@ -148,29 +155,11 @@ void ofApp::keyPressed(int key)
             mFourthCurtain.saveConfig();
             break;
     }
-
-    if (key == OF_KEY_CONTROL)
-    {
-        mShowConfiguration = !mShowConfiguration;
-        mFirstCurtain.showConfig(mShowConfiguration);
-        mSecondCurtain.showConfig(mShowConfiguration);
-        mThirdCurtain.showConfig(mShowConfiguration);
-        mFourthCurtain.showConfig(mShowConfiguration);
-    }
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key)
+void ofApp::mouseDragged(int x, int y, int /*button*/)
 {
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y )
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
     for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mouseDragged(x, y);
@@ -178,7 +167,8 @@ void ofApp::mouseDragged(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
+void ofApp::mousePressed(int x, int y, int /*button*/)
+{
     for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mousePressed(x, y);
@@ -186,35 +176,10 @@ void ofApp::mousePressed(int x, int y, int button){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button)
+void ofApp::mouseReleased(int x, int y, int /*button*/)
 {
     for (int i = 0; i < mScreenMappersCount; i++)
     {
         mScreens[i].mouseReleased(x, y);
     }
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y)
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y)
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h)
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg)
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo)
-{
 }
