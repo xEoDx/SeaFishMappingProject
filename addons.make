@@ -1,3 +1,4 @@
 ofxFreeMapping
 ofxFreeMask
 ofxGui
+ofxJSON
